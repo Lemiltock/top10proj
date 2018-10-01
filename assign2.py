@@ -24,6 +24,7 @@ def page_scrape(url):
 def git_trending():
     '''
     returns a list of tuples that match the trending repo and stars
+    (repo, stars)
     '''
     raw_data = page_scrape('https://github.com/trending')
     # split pattern into two strings for easy reading
@@ -32,11 +33,13 @@ def git_trending():
     pattern = pattern1 + pattern2
     clean_data = html.unescsape(raw_data)
     data = re.findall(pattern, clean_data, flags=re.DOTALL)
-    print('<tr>\n<th>"REPO"</th>\n<th>"Stars"</th>\n</tr>')
-    for rank in range(10):
-        print('<tr>\n<td>'+data[rank][0]+'</td>\n<td>'+data[rank][1]+'</td>\n</tr>')
+    return data[0:10]
 
 def stack_topqs():
+    '''
+    returns a list of tuples that match the top questions and their views
+    (views, question)
+    '''
     raw_data = page_scrape('https://stackoverflow.com/')
     # split pattern into two strings for easy reading
     pattern1 = r'<div class="question-summary narrow".*?class="views".*?title="(.*?)"'
@@ -45,10 +48,21 @@ def stack_topqs():
     clean_data = html.unescape(raw_data)
     data = re.findall(pattern, clean_data, flags=re.DOTALL)
     return data[0:10]
+
+def imdb_popular_tv():
     '''
-    print('<tr>\n<th>"Question"</th>\n<th>"Views"</th>\n</tr>')
-    for rank in range(10):
-        print('<tr>\n<td>'+data[rank][1]+'</td>\n<td>'+data[rank][0]+'</td>\n</tr>')'''
+    returns a list of tuples that match most popular tv and their imdb ranking
+    (show, rank)
+    '''
+    raw_data = page_scrape('https://www.imdb.com/chart/tvmeter')
+    #split pattern into two strings for easy reading
+    pattern1 = r'<td class="titleColumn">.*?>(.*?)</a>.*?'
+    pattern2 = r'<td class="ratingColumn imdbRating">.*?title=(.*?) .*?<td class="ratingColumn">'
+    pattern = pattern1 + pattern2
+    clean_data = html.unescape(raw_data)
+    data = re.findall(pattern, clean_data, flags=re.DOTALL)
+    return data[0:10]
 
 #print(git_trending())
 #print(stack_topqs())
+print(imdb_popular_tv())
