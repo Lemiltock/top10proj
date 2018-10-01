@@ -23,7 +23,7 @@ def page_scrape(url):
 
 def git_trending():
     '''
-    returns a list of tuples that match the trending repo and stars
+    returns a list of 10 tuples that match the trending repo and stars
     (repo, stars)
     '''
     raw_data = page_scrape('https://github.com/trending')
@@ -37,7 +37,7 @@ def git_trending():
 
 def stack_topqs():
     '''
-    returns a list of tuples that match the top questions and their views
+    returns a list of 10 tuples that match the top questions and their views
     (views, question)
     '''
     raw_data = page_scrape('https://stackoverflow.com/')
@@ -51,7 +51,7 @@ def stack_topqs():
 
 def imdb_popular_tv():
     '''
-    returns a list of tuples that match most popular tv and their imdb ranking
+    returns a list of 10 tuples that match most popular tv and their imdb ranking
     (show, rank)
     '''
     raw_data = page_scrape('https://www.imdb.com/chart/tvmeter')
@@ -63,6 +63,17 @@ def imdb_popular_tv():
     data = re.findall(pattern, clean_data, flags=re.DOTALL)
     return data[0:10]
 
-#print(git_trending())
-#print(stack_topqs())
-print(imdb_popular_tv())
+def html_export(image, title, col_label, data):
+    '''
+    image: string, link to image
+    title: string, table title
+    col_label: tuple of column labels
+    data: 10 tuples of table data
+    creates a html file export
+    '''
+    export = ('<!DOCTYPE html><html>\n<title>' + title + '</title>\n<body>\n<img src="' + image +
+              '" alt="Image Loading" width="500" height="500">\n<h1>' + title + '</h1>\n'
+              '<table>\n <tr>\n  <th>' + col_label[0] + '</th>)
+    print(export)
+
+html_export('test', 'title', ('a'), [('a')])
