@@ -57,7 +57,7 @@ def imdb_popular_tv():
     raw_data = page_scrape('https://www.imdb.com/chart/tvmeter')
     #split pattern into two strings for easy reading
     pattern1 = r'<td class="titleColumn">.*?>(.*?)</a>.*?'
-    pattern2 = r'<td class="ratingColumn imdbRating">.*?title=(.*?) .*?<td class="ratingColumn">'
+    pattern2 = r'<td class="ratingColumn imdbRating">.*?title="(.*?) .*?<td class="ratingColumn">'
     pattern = pattern1 + pattern2
     clean_data = html.unescape(raw_data)
     data = re.findall(pattern, clean_data, flags=re.DOTALL)
@@ -71,9 +71,68 @@ def html_export(image, title, col_label, data):
     data: 10 tuples of table data
     creates a html file export
     '''
-    export = ('<!DOCTYPE html><html>\n<title>' + title + '</title>\n<body>\n<img src="' + image +
-              '" alt="Image Loading" width="500" height="500">\n<h1>' + title + '</h1>\n'
-              '<table>\n <tr>\n  <th>' + col_label[0] + '</th>)
+    format_match = {'title': title, 'image': image, 'column1': col_label[0], 'column2': col_label[1],
+                    'data1-1': data[0][0], 'data1-2': data[0][1], 'data2-1': data[1][0],
+                    'data2-2': data[1][1], 'data3-1': data[2][0], 'data3-2': data[2][1],
+                    'data4-1': data[3][0], 'data4-2': data[3][1], 'data5-1': data[4][0],
+                    'data5-2': data[4][1], 'data6-1': data[5][0], 'data6-2': data[5][1],
+                    'data7-1': data[6][0], 'data7-2': data[6][1], 'data8-1': data[7][0],
+                    'data8-2': data[7][1], 'data9-1': data[8][0], 'data9-2': data[8][1],
+                    'data10-1': data[9][0], 'data10-2': data[9][1]}
+    export = '''<!DOCTYPE html>
+<html>
+  <title>{title}</title>
+  <body>
+    <img src="{image}" alt="Image Loading" width="500" height="500">
+    <h1>{title}</h1>
+    <table>
+      <tr>
+        <th>{column1}</th>
+        <th>{column2}</th>
+      </tr>
+      <tr>
+        <td>{data1-1}</td>
+        <td>{data1-2}</td>
+      </tr>
+      <tr>
+        <td>{data2-1}</td>
+        <td>{data2-2}</td>
+      </tr>
+      <tr>
+        <td>{data3-1}</td>
+        <td>{data3-2}</td>
+      </tr>
+      <tr>
+        <td>{data4-1}</td>
+        <td>{data4-2}</td>
+      </tr>
+      <tr>
+        <td>{data5-1}</td>
+        <td>{data5-2}</td>
+      </tr>
+      <tr>
+        <td>{data6-1}</td>
+        <td>{data6-2}</td>
+      </tr>
+      <tr>
+        <td>{data7-1}</td>
+        <td>{data7-2}</td>
+      </tr>
+      <tr>
+        <td>{data8-1}</td>
+        <td>{data8-2}</td>
+      </tr>
+      <tr>
+        <td>{data9-1}</td>
+        <td>{data9-2}</td>
+      </tr>
+      <tr>
+        <td>{data10-1}</td>
+        <td>{data10-2}</td>
+      </tr>
+    </table>
+  </body>
+</html>'''.format(**format_match)
     print(export)
 
-html_export('test', 'title', ('a'), [('a')])
+html_export('test', 'title', ('Show', 'Rank'), imdb_popular_tv())
