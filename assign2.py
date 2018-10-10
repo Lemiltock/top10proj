@@ -9,6 +9,9 @@ import urllib.request as request
 import re
 import html
 
+images = {'git': 'someimg', 'stack': 'anotherimg', 'imdb': 'finalimg'}
+webpages = {'git': 'https://github.com/trending', 'stack': 'https://stackoverflow.com/', 'imdb': 'https://www.imdb.com/chart/tvmeter'}
+
 def page_scrape(url):
     '''
     Set browser type to mozilla
@@ -26,12 +29,12 @@ def git_trending():
     returns a list of 10 tuples that match the trending repo and stars
     (repo, stars)
     '''
-    raw_data = page_scrape('https://github.com/trending')
+    raw_data = page_scrape(webpages['git'])
     # split pattern into two strings for easy reading
     pattern1 = r'<li class="col-12 d-block width-full py-4 border-bottom" id="[a-zA-Z-]*">.*?<a href="(.*?)"'
     pattern2 = r'.*?<span class="d-inline-block float-sm-right">.*?/svg>\n *(.*?)\n'
     pattern = pattern1 + pattern2
-    clean_data = html.unescsape(raw_data)
+    clean_data = html.unescape(raw_data)
     data = re.findall(pattern, clean_data, flags=re.DOTALL)
     return data[0:10]
 
@@ -40,7 +43,7 @@ def stack_topqs():
     returns a list of 10 tuples that match the top questions and their views
     (views, question)
     '''
-    raw_data = page_scrape('https://stackoverflow.com/')
+    raw_data = page_scrape(webpages['stack'])
     # split pattern into two strings for easy reading
     pattern1 = r'<div class="question-summary narrow".*?class="views".*?title="(.*?)"'
     pattern2 = r'.*?class="question-hyperlink">(.*?)</a'
@@ -54,7 +57,7 @@ def imdb_popular_tv():
     returns a list of 10 tuples that match most popular tv and their imdb ranking
     (show, rank)
     '''
-    raw_data = page_scrape('https://www.imdb.com/chart/tvmeter')
+    raw_data = page_scrape(webpages['imdb'])
     #split pattern into two strings for easy reading
     pattern1 = r'<td class="titleColumn">.*?>(.*?)</a>.*?'
     pattern2 = r'<td class="ratingColumn imdbRating">.*?title="(.*?) .*?<td class="ratingColumn">'
@@ -164,3 +167,5 @@ def html_export(image, title, col_label, data, webpage):
   </body>
 </html>'''.format(**format_match)
     return export
+
+#def archiver(image, title, col_label
