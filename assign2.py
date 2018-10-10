@@ -63,13 +63,14 @@ def imdb_popular_tv():
     data = re.findall(pattern, clean_data, flags=re.DOTALL)
     return data[0:10]
 
-def html_export(image, title, col_label, data):
+def html_export(image, title, col_label, data, webpage):
     '''
     image: string, link to image
     title: string, table title
     col_label: tuple of column labels
     data: 10 tuples of table data
-    creates a html file export
+    webpage: string, source location for data
+    returns a multiline string of html code ready for export
     '''
     format_match = {'title': title, 'image': image, 'column1': col_label[0], 'column2': col_label[1],
                     'data1-1': data[0][0], 'data1-2': data[0][1], 'data2-1': data[1][0],
@@ -78,61 +79,73 @@ def html_export(image, title, col_label, data):
                     'data5-2': data[4][1], 'data6-1': data[5][0], 'data6-2': data[5][1],
                     'data7-1': data[6][0], 'data7-2': data[6][1], 'data8-1': data[7][0],
                     'data8-2': data[7][1], 'data9-1': data[8][0], 'data9-2': data[8][1],
-                    'data10-1': data[9][0], 'data10-2': data[9][1]}
+                    'data10-1': data[9][0], 'data10-2': data[9][1], 'webpage': webpage}
     export = '''<!DOCTYPE html>
 <html>
   <title>{title}</title>
   <body>
     <img src="{image}" alt="Image Loading" width="500" height="500">
+    <!--Create 3x11 table to display ranked data-->
     <h1>{title}</h1>
     <table>
       <tr>
+        <th>Rank</th>
         <th>{column1}</th>
         <th>{column2}</th>
       </tr>
       <tr>
+        <td>1</td>
         <td>{data1-1}</td>
         <td>{data1-2}</td>
       </tr>
       <tr>
+        <td>2</td>
         <td>{data2-1}</td>
         <td>{data2-2}</td>
       </tr>
       <tr>
+        <td>3</td>
         <td>{data3-1}</td>
         <td>{data3-2}</td>
       </tr>
       <tr>
+        <td>4</td>
         <td>{data4-1}</td>
         <td>{data4-2}</td>
       </tr>
       <tr>
+        <td>5</td>
         <td>{data5-1}</td>
         <td>{data5-2}</td>
       </tr>
       <tr>
+        <td>6</td>
         <td>{data6-1}</td>
         <td>{data6-2}</td>
       </tr>
       <tr>
+        <td>7</td>
         <td>{data7-1}</td>
         <td>{data7-2}</td>
       </tr>
       <tr>
+        <td>8</td>
         <td>{data8-1}</td>
         <td>{data8-2}</td>
       </tr>
       <tr>
+        <td>9</td>
         <td>{data9-1}</td>
         <td>{data9-2}</td>
       </tr>
       <tr>
+        <td>10</td>
         <td>{data10-1}</td>
         <td>{data10-2}</td>
       </tr>
     </table>
+    <!-- Add source location as a hyperlink for tabulated data -->
+    This data was sourced from <a href="{webpage}">{webpage}<a/>.
   </body>
 </html>'''.format(**format_match)
     print(export)
-
-html_export('test', 'title', ('Show', 'Rank'), imdb_popular_tv())
