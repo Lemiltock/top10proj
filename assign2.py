@@ -82,12 +82,27 @@ def html_export(image, title, col_label, data, webpage):
                     'data10-1': data[9][0], 'data10-2': data[9][1], 'webpage': webpage}
     export = '''<!DOCTYPE html>
 <html>
-  <title>{title}</title>
+  <head>
+    <!-- An automatically generated HTML document -->
+    <meta charset="UTF-8">
+    <title>{title}</title>
+    <!-- Center align headings and table, give table 15px padding on cells -->
+    <style>
+      h1 {margin-left: auto; margin-right: auto; text-align: center}
+      h2 {margin-left: auto; margin-right: auto, text-align: center}
+      table {margin-left: auto; margin-right: auto; align: center}
+      td {padding: 15 px}
+      tr {padding: 15 px}
+  </head>
   <body>
-    <img src="{image}" alt="Image Loading" width="500" height="500">
-    <!--Create 3x11 table to display ranked data-->
+    <!-- Title, date and image -->
     <h1>{title}</h1>
-    <table>
+    <h2>Date</h2>
+    <p align="center">
+    <img src="{image}" alt="Image Loading" width="500" height="500">
+    </p>
+    <!--Create 3x11 table to display top 10 ranked data as (rank, name, attribute) -->
+    <table border=1>
       <tr>
         <th>Rank</th>
         <th>{column1}</th>
@@ -148,4 +163,4 @@ def html_export(image, title, col_label, data, webpage):
     This data was sourced from <a href="{webpage}">{webpage}<a/>.
   </body>
 </html>'''.format(**format_match)
-    print(export)
+    return export
