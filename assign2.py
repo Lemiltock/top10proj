@@ -11,6 +11,7 @@ import html
 
 images = {'git': 'someimg', 'stack': 'anotherimg', 'imdb': 'finalimg'}
 webpages = {'git': 'https://github.com/trending', 'stack': 'https://stackoverflow.com/', 'imdb': 'https://www.imdb.com/chart/tvmeter'}
+columns = {'git': ['Repo', 'Stars'], 'stack': ['Question', 'Views'], 'imdb': ['Tv show', 'Rating']}
 
 def page_scrape(url):
     '''
@@ -168,4 +169,36 @@ def html_export(image, title, col_label, data, webpage):
 </html>'''.format(**format_match)
     return export
 
-#def archiver(image, title, col_label
+def html_archiver(image, title, col_label, data, webpage, filename, overwrite='y'):
+    '''
+    image: string, link to image
+    title: string, table title
+    col_label: tuple of column labels
+    data: 10 tuples of table data to export
+    webpage: string, source location for data
+    filename: string, name of html archive file
+    overwrite: string, 'y' or 'n' setting for overwrite if archive already exists
+    '''
+    # Check for HTML archive
+    try:
+        archive = open(r'/Archive/%s' % (filename,), 'r')
+    except FileNotFoundError:
+        pass
+    else:
+        if overwrite == 'n':
+            return 'File already exists'
+    # Create new file and push HTML data to it
+    with open(r'/Archive/{filename}.format(, 'w') as archive:
+        archive.write(html_export(image, title, col_label, data, webpage)
+
+def sql_archiver(image, title, col_label, data, webpage, table, overwrite='y'):
+    '''
+    image: string, link to image
+    title: string, table title
+    col_label: tuple of column labels
+    data: 10 tuples of table data to export
+    webpage: string, source location for data
+    table: string, name of html archive file
+    overwrite: string, 'y' or 'n' setting for overwrite if archive already exists
+    '''
+    # Do SQL archive
